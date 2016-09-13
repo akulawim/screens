@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Menu Cycles</title>
+      <!-- CDN's -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.min.js"></script>
+      <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/ember.js/1.10.0/ember.min.js"></script>
+      <script src="http://builds.emberjs.com/tags/v1.10.0-beta.3/ember-template-compiler.js"></script>
+      <script src="http://builds.emberjs.com/release/ember.debug.js"></script>
+      <script src="http://builds.emberjs.com/beta/ember-data.js"></script>
+      
+       <style>
+         
+         .tdHeight{
+             height: 70px
+         }
+         
+       #table  {
+            position: relative;
+            border: 3px white;
+            height: 70px;
+            width: 100%;
+            
+            
+        }
+        
+        #mealperioddiv{
+            position: absolute;
+            right: 9px;  /* Put the left edge on the horizontal center */
+            top: 320px;
+            height:500px;
+            width:30%;
+            border: 3px solid #CBFBB9;
+        }
+
+        .text{
+            font-size: larger;
+        }
+
+        .rcorners1 {
+            border-radius: 25px;
+            background: #81F781;
+            padding: 20px;
+            width: 200px;
+            height: 150px;
+        }
+        
+        .freContainer-item{
+            margin: 25px;
+            display: inline-block;   
+            margin-left: 25px;
+            font-size: larger;
+        }
+        
+        .inner {
+            width: 55%;
+            margin: 0 auto; 
+        }
+        
+        .noHover{
+            background-color: #FA8C74;
+        }
+        
+        .onHover{
+            background-color: #A3FBF7;
+        }
+        
+        .hid{
+            visibility: hidden;
+        }
+        
+        section {
+            width: 100%;
+            height: 200px;
+            
+            margin: auto;
+            padding: 10px;
+        }
+        div#one {
+            width: 40%;
+            height: 370px;
+            background: #E3FCDA;
+            float: left;
+            text-align: center;
+            vertical-align: middle;
+        }
+        div#two {
+            width: 40%;
+            margin-left : 50%;
+            height: 370px;
+            background: #E3FCDA;
+            text-align: center;
+        }
+ </style>
+     
+   </head>
+   
+   <body onload="doThis()">
+       
+       <script>
+           var flagForCell = 0;
+           var flagForNotSelectingMoreCells = 0;
+           var cellid = "";
+           function doThis(){ //ONLOAD FUNCTION
+               //document.getElementById("mealperioddiv").style.visibility = "hidden";
+               $("#mealperioddiv").hide();
+               $("#addSectionAndMeal").hide();
+               
+               
+               for(var i = 1 ; i <= 3 ; i++){
+                   var trString = "<tr>";
+                   for(var j = 1 ; j <= 7 ; j++ ){
+                      trString += '<td onclick="selectCell(this.id)" class="tdHeight noHover" id="day'+i+j+'">';
+                   }
+                   trString += "</tr>";
+                   $('#table tr:last').after(trString);
+               }
+             }
+            
+            function selectCell(id){ // METHOD TO SELECT CELL.
+                    $("#"+cellid).removeClass("onHover");
+                    cellid = id;
+                    $("#forError").html("");    
+                    flagForCell = 1;
+                     
+                    $("#"+id).addClass("onHover");
+             }
+       </script>
+           
+       
+       <script type="text/x-handlebars">
+         {{outlet}}
+      </script>
+      
+   
+      <script type="text/x-handlebars" data-template-name="index">
+          <hr/>
+            content
+          <hr/>
+          
+        <div id="freContainer">  
+            <div class="freContainer-item">Day</div>
+            <div class="freContainer-item">Week</div>
+            <div class="freContainer-item">Month</div>
+            <div align="center" class="freContainer-item inner"><select ><option>Menu Cycle Name</option></select></div>
+        </div>
+            <div id="freContainer">
+            <div class="freContainer-item hid">Day</div>
+            <div class="freContainer-item hid">Week</div>
+            <div class="freContainer-item hid">Month</div>
+                <div align="center" class="freContainer-item inner">
+                    Week 
+                </div>
+        </div>
+        
+       
+
+    
+         <span><img src="images/addSection.png" height="75" width="75" {{action "addmeal"}}/> <img height="75" width="75" src="images/addFooditem.png" {{action "fooditems"}}/> </span>
+         
+         <div style="text-align: center;">
+            <span id="forError">
+            </span>
+        </div>
+
+         <table><tr><td></td></tr></table>
+         
+<div id="container">
+        
+  <div>
+    <table id="table" border="1" cellpadding="10" cellspacing="10"  style="border-collapse:collapse;" class="rcorners1">
+        <tr>
+            <th>
+                Day 1
+            </th>
+            <th>
+                Day 2
+            </th>
+            <th>
+                Day 3
+            </th>
+            <th>
+                Day 4
+            </th>
+            <th>
+                Day 5
+            </th>
+            <th>
+                Day 6
+            </th>
+            <th>
+                Day 7
+            </th>
+        </tr>
+    </table>
+  </div>
+ 
+    <div id="mealperioddiv" style="background-color: #CBFBB9;"  class="rcorners1">
+ 
+            <input type="text" size="50" placeholder="Enter meal period name.."/> <button {{action "save"}} >Save</button> <img {{action "close"}}style="float:right;" src="images/close_u382.png" id="closeimage"/>
+            <hr/>
+            <table border="1" cellpadding="10" cellspacing="10" style="border-collapse:collapse;background-color:#CBFBB9">
+                <tr style="width: 50%;">
+                    
+                    <td align="center">{{#link-to "meals"}}<img src="images/u364.png">Meals{{/link-to}}</td>
+                    <td><img src="images/u362.png">Copy</td>
+                    <td><img src="images/u358.png">Costs</td>
+                    <td><img src="images/u366.png">Nutrition</td>
+                    <td><img src="images/u368.png">Print</td>
+                </tr>
+            </table>
+    
+            <!--BELOW DIV APPEARS WHEN CLICKED ON SAVE   -->
+            <br/>
+            <div id="addSectionAndMeal" style = "border:1px solid #E3FCDA;">
+                <div id="one" class="rcorners1"><img src="images/addSection.png" height="42" width="42" {{action "addmeal"}}/><div>Add Sections</div></div>
+               
+                <div id="two" class="rcorners1"><img src="images/addFooditem.png" height="42" width="42" {{action "fooditems"}}/><div>Add Food Items</div></div>
+            </div>
+    </div>
+</div>
+</script>
+
+      
+                                            <!-- EMBER JS CONTROLLER -->
+      <script type="text/javascript">
+          
+         App = Ember.Application.create({})
+         
+         App.IndexRoute = Ember.Route.extend({
+            actions: {
+               addmeal: function(user) {
+                   //controller.set is for the Action Bubbling
+                   //this.controller.set('isExpanded', 'Welcome.. To Tutorialspoint');
+                   if(flagForCell == 1){
+                   $("#mealperioddiv").show(1000);
+               }else{
+                  $("#forError").html("<h2>Please select a day...</h2>");
+               }
+                   
+               },
+               close: function(){
+                   $("#mealperioddiv").hide(1000);
+                   $("#addSectionAndMeal").hide();
+               },
+               save:function(){
+                   $("#addSectionAndMeal").show();
+               }
+               
+               
+            }
+         });
+         
+         App.Router.map(function(){
+            this.resource("meals");
+         });
+       </script>
+    </body>
+</html>
